@@ -1,7 +1,6 @@
 # Debug_Tools
 Here will be allocated some debug tools
 
-"dbg_tool.sh" - Is a tool that helps to activate or deactivate debug io or debug io commands to see its response in the dmesg
-
+"dbg_tool.sh" - Is a tool that helps to activate or deactivate debug io or debug io commands to see its response in the dmesg. Is ready to use in a Linux terminal. It can help you activate or deactivate debug messages by op-code, according to the NVMe specification. To run the script, add the "-io" or "-admn" option to select where you want to work (I/O or Admin commands), followed by the desired op-code or op-codes. If you specify more than one, separate them with a comma (for example, 00,02,03). The script also includes common options such as "--help" or "-h" for help and usage, and "--default" to set default parameters according to <[Installing the Patch for Modifying Linux NVMe Driver to Enable Additional Logging (NSG Product Validation – NPSG Wiki)](https://npsg-wiki.elements.local/spaces/NSGPV/pages/204574913/Installing+the+Patch+for+Modifying+Linux+NVMe+Driver+to+Enable+Additional+Logging)>
 
 "RCV_Debugging_OneStop.py" - Here, we will outline how to prepare, access, and use the script designed to automate the log analysis process using the RCV framework. Its main objective is to compile, filter, and simplify the collection and processing of relevant information for depuration, utilizing Jira data and system logs. Here is a link of the usage wiki: https://npsg-wiki.elements.local/spaces/~jlopez0/pages/857710488/Debug+Tool+-+RCV+Debugging+One+Stop+Script
