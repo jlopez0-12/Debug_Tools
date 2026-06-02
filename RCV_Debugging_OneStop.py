@@ -8,21 +8,23 @@ import shutil
 import zipfile
 import logging
 import getpass
-import urllib3
-import paramiko
 import subprocess
 import time
+import sys
+import importlib.util
 from stat import S_ISDIR
-from tqdm import tqdm
 from datetime import datetime, timedelta
-from jira import JIRA
+
+# -----------------------------------------
+# Dependency Management (first-time setup)
+# -----------------------------------------
 
 class TerminalCommands:
-    """Class encapsulating terminal commands."""
+    """Class encapsulating terminal commands for installing third-party packages."""
+    # Only third-party packages listed here — standard library modules do NOT need pip.
     commands = [
-        ["py", "-m", "pip", "install", "-U", "pip"],
-        ["py", "-m", "pip", "install", "jira", "urllib3", "paramiko", "logging",
-         "shutil", "zipfile", "re", "os", "subprocess", "datetime", "tqdm"]
+        [sys.executable, "-m", "pip", "install", "-U", "pip"],
+        [sys.executable, "-m", "pip", "install", "jira", "urllib3", "paramiko", "tqdm"]
     ]
 
 def run_terminal_commands(commands):
@@ -48,7 +50,33 @@ def run_terminal_commands(commands):
                 print("Error:", e.stderr.strip())
         print("=" * 50)
 
-run_terminal_commands(TerminalCommands.commands)
+def check_and_install_dependencies():
+    """
+    Check whether required third-party packages are available.
+    Installs them only if one or more are missing (first-time setup).
+    Subsequent runs skip installation entirely.
+    """
+    third_party = {
+        "jira":     "jira",
+        "urllib3":  "urllib3",
+        "paramiko": "paramiko",
+        "tqdm":     "tqdm",
+    }
+    missing = [pkg for mod, pkg in third_party.items()
+               if importlib.util.find_spec(mod) is None]
+    if missing:
+        print(f"First-time setup — installing missing packages: {', '.join(missing)}")
+        run_terminal_commands(TerminalCommands.commands)
+    else:
+        print("All dependencies already installed. Skipping installation.")
+
+check_and_install_dependencies()
+
+# Third-party imports — placed here so they load after the dependency check above.
+import urllib3
+import paramiko
+from tqdm import tqdm
+from jira import JIRA
 
 # Configurar logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
